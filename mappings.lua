@@ -17,7 +17,12 @@ return {
       function() require("astronvim.utils.buffer").nav(-(vim.v.count > 0 and vim.v.count or 1)) end,
       desc = "Previous buffer",
     },
-    -- Navigate tabs
+
+    -- Toggle mypy annotations, useful for focused work
+    ["<leader>lm"] = {
+      function() require("null-ls").toggle { "mypy" } end,
+      desc = "Toggle mypy virtual text",
+    },
 
     -- mappings seen under group name "Buffer"
     ["<leader>bD"] = {
