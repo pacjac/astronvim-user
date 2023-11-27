@@ -38,9 +38,18 @@ return {
     ["<leader>b"] = { name = "Buffers" },
     -- quick save
     -- ["<C-s>"] = { ":w!<cr>", desc = "Save File" },  -- change description but the same command
-  },
-  t = {
-    -- setting a mapping to false will disable it
-    -- ["<esc>"] = false,
+    ["<leader>tt"] = {
+      function() require("transparent").toggle() end,
+      desc = "Toggle transparency",
+    },
+
+    -- Noetest commands
+    ["<leader>mt"] = { "<cmd>Neotest run<cr>", desc = "Run all tests" },
+    ["<leader>ml"] = { function() require("neotest").run.run(vim.fn.expand "%") end, desc = "Run this file" },
+    ["<leader>md"] = { function() require("neotest").run.run { strategy = "dap" } end, desc = "Debug this test" },
+    ["<leader>ma"] = { function() require("neotest").run.attach() end, desc = "Debug this test" },
+    ["<leader>mo"] = { function() require("neotest").output.open() end, desc = "Open Test result" },
+    ["<leader>mO"] = { function() require("neotest").output.open { enter = true } end, desc = "Open Test result" },
+    ["<leader>ms"] = { "<cmd>Neotest summary<cr>", desc = "Toggle Summary" },
   },
 }
