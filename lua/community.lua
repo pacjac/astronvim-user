@@ -7,7 +7,6 @@ return {
   "AstroNvim/astrocommunity",
   { import = "astrocommunity.colorscheme.catppuccin" },
   { import = "astrocommunity.colorscheme.gruvbox-nvim" },
-  { import = "astrocommunity.completion.copilot-cmp" },
   -- { import = "astrocommunity.pack.lua" },
   -- import/override with your plugins folder
 }
