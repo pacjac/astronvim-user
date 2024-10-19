@@ -16,6 +16,13 @@ gen.prompts["FastAPI document endpoint"] = {
 }
 
 gen.prompts["Proofread"] = {
-  prompt = "Proofread the following text: $text",
+  prompt = "Proofread the following text: $text. Only output the result in markdown format.",
+  --. Only output the result in format $filetype.
+  replace = true,
+}
+
+gen.prompts["MarkdownFormat"] = {
+  prompt = "Format the following text: $text. Only output the result in markdown format.",
+  --. Only output the result in format $filetype.
   replace = true,
 }

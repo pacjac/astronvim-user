@@ -14,8 +14,14 @@ return {
     port = "443", -- Standard HTTPS port
     quit_map = "q", -- keymap to close the response window
     retry_map = "<c-r>", -- keymap to re-send the current prompt
+    display_mode = "float", -- "float" or "split"
+    show_prompt = true,
+    show_model = true,
+    no_auto_close = true,
+    debug = false,
     command = function(options)
       -- Construct the command for the ChatGPT API
+      local api_key = os.getenv "OPENAI_API_KEY"
 
       local messages = {
         { role = "user", content = options.prompt },
@@ -45,10 +51,5 @@ return {
 
       return curl_command
     end,
-    display_mode = "float", -- "float" or "split"
-    show_prompt = true,
-    show_model = true,
-    no_auto_close = true,
-    debug = false,
   },
 }
