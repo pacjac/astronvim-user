@@ -10,12 +10,6 @@ return {
   --   "BufReadPre path/to/my-vault/**.md",
   --   "BufNewFile path/to/my-vault/**.md",
   -- },
-  dependencies = {
-    -- Required.
-    "nvim-lua/plenary.nvim",
-
-    -- see below for full list of optional dependencies 👇
-  },
   opts = {
     workspaces = {
       {
@@ -88,5 +82,25 @@ return {
 
     -- Optional, customize how markdown links are formatted.
     markdown_link_func = function(opts) return require("obsidian.util").markdown_link(opts) end,
+  },
+
+  dependencies = {
+    -- Required.
+    "nvim-lua/plenary.nvim",
+
+    -- see below for full list of optional dependencies 👇
+    {
+      "AstroNvim/astrocore",
+      optional = true,
+      opts = function(_, opts)
+        local maps = opts.mappings
+        local prefix = "<Leader>O"
+
+        maps.n[prefix] = { desc = "Obsidian" }
+        maps.n[prefix .. "n"] = { "<cmd>ObsidianNew<cr>", desc = "New Note" }
+        maps.n[prefix .. "t"] = { "<cmd>ObsidianNewFromTemplate<cr>", desc = "New Note (Template)" }
+        maps.n[prefix .. "l"] = { "<cmd>ObsidianLinks<cr>", desc = "Open links" }
+      end,
+    },
   },
 }
