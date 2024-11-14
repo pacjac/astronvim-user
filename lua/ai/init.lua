@@ -14,3 +14,8 @@ gen.prompts["FastAPI document endpoint"] = {
   prompt = 'Create a python docstring function in the following format """A summary sentence. \n -***Item1***: Explanation of Item1 \n -***Item2***: Explanation of Item2""" for the following function: $text',
   replace = false,
 }
+
+gen.prompts["Proofread"] = {
+  prompt = "Proofread the following text: $text",
+  replace = true,
+}

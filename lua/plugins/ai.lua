@@ -1,26 +1,54 @@
+local function log_to_file(message)
+  local log_file = io.open("/tmp/openai_api_debug.log", "a")
+  if log_file then
+    log_file:write(os.date "%Y-%m-%d %H:%M:%S" .. " " .. message .. "\n")
+    log_file:close()
+  end
+end
+
 return {
   "David-Kunz/gen.nvim",
   opts = {
-    model = "codestral:latest",
-    host = "localhost", -- The host running the Ollama service.
-    port = "11434", -- The port on which the Ollama service is listening.
-    quit_map = "q", -- set keymap for close the response window
-    retry_map = "<c-r>", -- set keymap to re-send the current prompt
-    -- init = function(options) pcall(io.popen, "ollama serve > /dev/null 2>&1 &") end,
-    -- Function to initialize Ollama
+    model = "gpt-3.5-turbo", -- or another available model like "gpt-4" if accessible
+    host = "api.openai.com", -- OpenAI's API host
+    port = "443", -- Standard HTTPS port
+    quit_map = "q", -- keymap to close the response window
+    retry_map = "<c-r>", -- keymap to re-send the current prompt
     command = function(options)
-      local body = { model = options.model, stream = true }
-      return "curl --silent --no-buffer -X POST http://" .. options.host .. ":" .. options.port .. "/api/chat -d $body"
+      -- Construct the command for the ChatGPT API
+
+      local messages = {
+        { role = "user", content = options.prompt },
+      }
+
+      local body = {
+        model = options.model,
+        stream = true,
+        messages = messages,
+      }
+
+      local json_body = vim.json.encode(body)
+      local escaped_json_body = vim.fn.shellescape(json_body)
+
+      local curl_command = string.format(
+        "curl --silent -X POST https://%s:%s/v1/chat/completions "
+          .. "-H 'Authorization: Bearer %s' "
+          .. "-H 'Content-Type: application/json' "
+          .. "-d %s",
+        options.host,
+        options.port,
+        api_key,
+        escaped_json_body
+      )
+
+      log_to_file(curl_command)
+
+      return curl_command
     end,
-    -- The command for the Ollama service. You can use placeholders $prompt, $model and $body (shellescaped).
-    -- This can also be a command string.
-    -- The executed command must return a JSON object with { response, context }
-    -- (context property is optional).
-    -- list_models = '<omitted lua function>', -- Retrieves a list of model names
-    display_mode = "split", -- The display mode. Can be "float" or "split".
-    show_prompt = true, -- Shows the prompt submitted to Ollama.
-    show_model = true, -- Displays which model you are using at the beginning of your chat session.
-    no_auto_close = true, -- Never closes the window automatically.
-    debug = false, -- Prints errors and the command which is run.
+    display_mode = "float", -- "float" or "split"
+    show_prompt = true,
+    show_model = true,
+    no_auto_close = true,
+    debug = false,
   },
 }
